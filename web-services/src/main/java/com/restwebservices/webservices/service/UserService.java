@@ -6,14 +6,17 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.restwebservices.webservices.exceptions.PostsNotFoundException;
 import com.restwebservices.webservices.exceptions.UserNotFoundException;
 import com.restwebservices.webservices.models.Post;
 import com.restwebservices.webservices.models.User;
+import com.restwebservices.webservices.repositories.UserRepository;
 
-@Component
+@Service
 public class UserService {
 	private static ArrayList<User> users;
 
@@ -29,9 +32,12 @@ public class UserService {
 		users.add(new User("kk", 3, new Date()));
 
 	}
+	
+	@Autowired
+	private UserRepository userRepo;
 
 	public List<User> getAll() {
-		return users;
+		return userRepo.findAll();
 	}
 
 	public User saveUser(User u) {

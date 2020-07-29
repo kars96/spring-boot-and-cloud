@@ -1,9 +1,33 @@
 package com.restwebservices.webservices.models;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Post {
 	private String title;
 	private String content;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long postID;
+	
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
+	
+	public User getUsers() {
+		return user;
+	}
+	public void setUsers(User users) {
+		this.user = users;
+	}
 	public String getTitle() {
 		return title;
 	}
