@@ -1,0 +1,1 @@
+insert into user(username, first_name, second_name, age) values('kars96', 'Karthik', 'S', 24);
