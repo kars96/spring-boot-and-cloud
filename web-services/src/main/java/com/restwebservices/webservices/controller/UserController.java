@@ -2,6 +2,7 @@ package com.restwebservices.webservices.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -56,8 +57,8 @@ public class UserController {
 
 	// Get - /users/{id}
 	@GetMapping(path = "{id}")
-	public User getUserByID(@PathVariable Integer id) {
-		User user = userService.findByID(id);
+	public Optional<User> getUserByID(@PathVariable Integer id) {
+		Optional<User> user = userService.findByID(id);
 		if (user == null) {
 			throw new UserNotFoundException("id: " + id);
 		}
@@ -67,8 +68,8 @@ public class UserController {
 	// Post - /users
 	@PostMapping()
 	public ResponseEntity<Object> saveUser(@Valid @RequestBody User u) {
-		User user = userService.saveUser(u);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build(user.getId());
+		Optional<User> user = userService.saveUser(u);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build(user.get().getId());
 		return ResponseEntity.created(uri).build();
 	}
 
@@ -77,22 +78,17 @@ public class UserController {
 		return new ResponseEntity<List<Post>>(this.userService.getUserPosts(id), HttpStatus.FOUND);
 
 	}
-
-	@PostMapping(path = "/{id}/posts/add")
-	public ResponseEntity<Object> createUserPost(@PathVariable Integer id, @RequestBody Post p) {
-		p = this.userService.createUserPost(id, p);
-		URI uri = ServletUriComponentsBuilder.fromPath("/users/{id}/posts/{id}").build(id, p.getPostID());
-		return ResponseEntity.created(uri).build();
-	}
-
-	@GetMapping(path = "/{id}/posts/{postid}")
-	public ResponseEntity<Post> getUserPostById(@PathVariable Integer id, @PathVariable Long postid) {
-		return new ResponseEntity(this.userService.getUserPostById(id, postid), HttpStatus.FOUND);
-	}
+//
+//	@PostMapping(path = "/{id}/posts/add")
+//	public ResponseEntity<Object> createUserPost(@PathVariable Integer id, @RequestBody Post p) {
+//		p = this.userService.createUserPost(id, p);
+//		URI uri = ServletUriComponentsBuilder.fromPath("/users/{id}/posts/{id}").build(id, p.getPostID());
+//		return ResponseEntity.created(uri).build();
+//	}
 
 	@DeleteMapping(path = "{id}")
 	public void deleteuserByID(@PathVariable Integer id) {
-		User user = userService.deleteUserById(id);
+		userService.deleteUserById(id);
 
 //		 return ResponseEntity.noContent();
 	}

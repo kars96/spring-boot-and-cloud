@@ -1,7 +1,5 @@
 package com.restwebservices.webservices.models;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,17 +7,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Post {
 	private String title;
 	private String content;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long postID;
 	
 	@ManyToOne
 	@JoinColumn(name = "userId")
+	@JsonBackReference
 	private User user;
 	
 	public User getUsers() {
